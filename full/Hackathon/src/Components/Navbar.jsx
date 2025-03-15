@@ -46,6 +46,9 @@ export default function Navbar({ user, setUser }) {
             <a href="/contact" className="text-gray-600 hover:text-indigo-600 transition">
               Contact
             </a>
+            <a href="/stocks" className="text-gray-600 hover:text-indigo-600 transition">
+              Stocks
+            </a>
           </div>
 
           {/* User Actions */}

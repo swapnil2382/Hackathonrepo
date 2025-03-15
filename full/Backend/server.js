@@ -4,8 +4,9 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes'); 
-const investmentRoutes = require('./routes/investmentRoutes'); // Import investments route
-
+const investmentRoutes = require('./routes/investmentRoutes');
+const stockRoutes = require("./routes/stockRoutes");  // Import investments route
+const marketRoutes = require("./routes/marketRoutes");
 const app = express();
 const port = 5000;
 
@@ -15,7 +16,9 @@ app.use(cors());
 
 // Mount API routes
 app.use('/api/auth', authRoutes);
-app.use('/api/investments', investmentRoutes);  // 👈 Now investments route is accessible
+app.use('/api/investments', investmentRoutes);
+app.use("/api/stocks", stockRoutes);
+app.use("/api", marketRoutes);  // 👈 Now investments route is accessible
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,

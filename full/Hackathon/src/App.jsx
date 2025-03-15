@@ -11,6 +11,8 @@ import Home from './pages/Home';
 import Contact from './pages/Contact'
 import Services from './pages/Services'
 import Calculator from './pages/Calculator';
+import StockData from './pages/Stockdata';
+
 
 
 
@@ -40,10 +42,13 @@ function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Services" element={<Services />} />
           <Route path="/calculator" element={<Calculator />} />
+          <Route path="/stocks" element={<StockData />} />
+         
         </Routes>
       </div>
-      
     </Router>
   );
 }
 export default App;
+
+
