@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Contact from './pages/Contact'
 import Services from './pages/Services'
 import Calculator from './pages/Calculator';
+import InvestmentSuggestions from './pages/InvestmentSuggestions';
 
 
 
@@ -42,6 +43,8 @@ function App() {
           <Route path="/calculator" element={<Calculator />} />
         </Routes>
       </div>
+      <InvestmentSuggestions/>
+      <Footer/>
       
     </Router>
   );

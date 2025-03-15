@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ user, setUser }) {
@@ -10,105 +10,112 @@ export default function Navbar({ user, setUser }) {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleLogout = (event) => {
-    event.preventDefault(); // Prevent default behavior
-
-    console.log("Logging out...");
-
-    // Remove token from localStorage
+    event.preventDefault();
     localStorage.removeItem("token");
-
-    // Reset user state
     setUser(null);
-
-    console.log("User logged out");
-
-    // Force a page reload to update the UI
-    window.location.reload();
+    window.location.reload(); // Reload to reflect logout
   };
 
-  return (
-    <nav className="bg-white shadow-lg top-0 left-0 w-full z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="text-2xl font-bold text-indigo-600">Investment-Portal</div>
+  const menuLinks = [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
+    { label: "Contact", href: "/contact" },
+  ];
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            <a href="/" className="text-gray-600 hover:text-indigo-600 transition">
-              Home
-            </a>
-            <a href="#" className="text-gray-600 hover:text-indigo-600 transition">
-              About
-            </a>
-            <a href="/services" className="text-gray-600 hover:text-indigo-600 transition">
-              Services
-            </a>
-            <a href="/contact" className="text-gray-600 hover:text-indigo-600 transition">
-              Contact
-            </a>
+  return (
+    <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div
+            className="text-2xl font-extrabold text-indigo-600 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            Investment<span className="text-gray-800">Portal</span>
           </div>
 
-          {/* User Actions */}
-          <div className="flex items-center space-x-4">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-8 items-center">
+            {menuLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-black font-semibold !no-underline hover:text-indigo-600 transition"
+              >
+                {link.label}
+              </a>
+            ))}
+
             {user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-800">{user.name}</span>
-                <span className="text-2xl">👤</span>
+              <div className="flex items-center space-x-3">
+                <span className="text-gray-800 font-semibold flex items-center gap-1">
+                  👤 {user.name}
+                </span>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                  className="bg-red-500 text-white px-4 py-1.5 rounded hover:bg-red-600 transition duration-200"
                 >
                   Logout
                 </button>
               </div>
             ) : (
-              <a href="/login" className="text-gray-600 hover:text-indigo-600 transition">
+              <a
+                href="/login"
+                className="text-blue font-semibold !no-underline border border-red px-4 py-1.5 rounded hover:bg-gray-200 hover:text-white transition duration-200"
+              >
                 Login
               </a>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={toggleMenu} className="md:hidden text-gray-600">
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="md:hidden">
+            <button onClick={toggleMenu} className="text-gray-700">
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Mobile Dropdown Menu */}
+      {/* Mobile Menu */}
+      <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white shadow-md rounded-lg p-4 space-y-2"
+            className="md:hidden bg-white shadow-inner px-6 pt-4 pb-6 space-y-4"
           >
-            <a href="#" className="block text-gray-600 hover:text-indigo-600">
-              Home
-            </a>
-            <a href="#" className="block text-gray-600 hover:text-indigo-600">
-              About
-            </a>
-            <a href="#" className="block text-gray-600 hover:text-indigo-600">
-              Services
-            </a>
-            <a href="#" className="block text-gray-600 hover:text-indigo-600">
-              Contact
-            </a>
+            {menuLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="block text-gray-700 font-medium hover:text-indigo-600 transition duration-200"
+              >
+                {link.label}
+              </a>
+            ))}
+
             {user ? (
               <button
                 onClick={handleLogout}
-                className="w-full text-left text-red-500 hover:text-red-600"
+                className="block text-left w-full text-red-500 hover:text-red-600 font-medium"
               >
                 Logout
               </button>
             ) : (
-              <a href="/login" className="block text-gray-600 hover:text-indigo-600">
+              <a
+                href="/login"
+                className="block text-indigo-600 font-medium hover:underline"
+              >
                 Login
               </a>
             )}
           </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </nav>
   );
 }
