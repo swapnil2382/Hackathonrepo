@@ -1,0 +1,9 @@
+/* Home.css */
+
+/* Example: override background image for hero */
+.hero-bg {
+    background-image: url('https://media.istockphoto.com/id/1470066185/photo/mutual-fund-or-systematic-investment-plan-concept-putting-coin-on-coin-stack.jpg?s=612x612&w=0&k=20&c=pyc0fmFNupQ_OKpjNj8qSVpRhRa0ir9lqmB5TpA25gc=');
+    background-size: cover;
+    background-position: center;
+  }
+  
