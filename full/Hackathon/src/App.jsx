@@ -13,6 +13,7 @@ import Services from './pages/Services'
 import Calculator from './pages/Calculator';
 import StockData from './pages/Stockdata';
 
+import InvestmentSuggestions from './pages/InvestmentSuggestions';
 
 
 
@@ -43,9 +44,12 @@ function App() {
           <Route path="/Services" element={<Services />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/stocks" element={<StockData />} />
+          <Route path="/sugges" element={<InvestmentSuggestions/>} />
          
         </Routes>
       </div>
+      <Footer/>
+      
     </Router>
   );
 }
