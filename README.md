@@ -37,8 +37,11 @@
 ### **📈 Investment Page**  
 ![Investment Page](https://github.com/user-attachments/assets/40713171-c17a-47cd-848a-fe0055867ac9)  
 
-### **🔍 Suggestions Page**  
+### **💰 Portfolio Page**  
 ![Suggestions Page](https://github.com/user-attachments/assets/78bd62fe-b802-479f-a0ea-da3eb40eaee1)  
+
+### **🔍 Suggestion Page**  
+![Screenshot 2025-03-16 134545](https://github.com/user-attachments/assets/3af4d560-3bf9-47de-8bef-3456585ccb5e)
 
 ---
 
