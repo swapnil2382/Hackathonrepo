@@ -1,77 +1,81 @@
-# Investment-Portal
 
-## Overview
-This is a full-featured investment calculator and stock trading application that allows users to calculate potential investments, add money to their account, and purchase stocks based on their available balance.
+# **Investment-Portal** 🚀  
 
-## Features
-### 1. **Investment Calculator**
-   - 100% width layout with a split-screen design.
-   - Form on the left side for user input.
-   - Calculation results displayed dynamically on the right side.
-
-### 2. **Add Money Feature**
-   - Dedicated page to display account balance.
-   - Users can add money to their account.
-   - Backend support to update and store balance.
-
-### 3. **Stock Purchase System**
-   - Users can purchase stocks if they have a sufficient balance.
-   - If balance is insufficient, an alert is displayed.
-   - The balance is displayed at the top of the page for easy tracking.
-
-### 4. **Enhanced Profile Page**
-   - Modern UI with smooth animations and transitions.
-   - Interactive elements for a better user experience.
-   - A visually appealing "Add Money" button for user engagement.
-
-![Screenshot 2025-03-16 132912](https://github.com/user-attachments/assets/118038a0-55f9-40a8-9104-c9b06670a383)
-**HAOME PAGE**
-
-![Screenshot 2025-03-16 132938](https://github.com/user-attachments/assets/40713171-c17a-47cd-848a-fe0055867ac9)
-**INVESTMENT PAGE**
-
-![Screenshot 2025-03-16 133024](https://github.com/user-attachments/assets/78bd62fe-b802-479f-a0ea-da3eb40eaee1)
-**SUGGESTION PAGE**
-
-
-
-## Tech Stack
-- **Frontend:** React, Tailwind CSS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-
-## Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-repo-name.git
-   cd your-repo-name
-   ```
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Start the backend server:
-   ```sh
-   node server.js
-   ```
-4. Start the frontend:
-   ```sh
-   npm start
-   ```
-
-## Usage
-1. Navigate to the investment calculator to analyze potential returns.
-2. Add funds to your account before making stock purchases.
-3. Buy stocks based on available funds, and get alerts if the balance is insufficient.
-4. Explore the enhanced profile page for a visually engaging experience.
-
-## Contributions
-Contributions are welcome! Feel free to open an issue or submit a pull request.
-
-## License
-This project is licensed under the MIT License.
+## **Overview**  
+**Investment-Portal** is a feature-rich investment calculator and stock trading platform that empowers users to analyze potential investments, manage their account balance, and purchase stocks efficiently. With an intuitive UI and real-time balance validation, users can seamlessly track and grow their investments.  
 
 ---
 
-For any queries, contact [your-email@example.com].
+## **Features**  
+### 🔹 **Investment Calculator**  
+✅ Full-width, responsive layout with a split-screen design.  
+✅ Interactive form on the left for real-time user input.  
+✅ Instant calculation results displayed dynamically on the right.  
 
+### 🔹 **Add Money Feature**  
+✅ Dedicated account balance page for easy fund management.  
+✅ Secure backend support for balance updates and storage.  
+✅ Real-time balance reflection across the platform.  
+
+### 🔹 **Stock Purchase System**  
+✅ Users can buy stocks only if they have sufficient funds.  
+✅ Instant alerts for insufficient balance to prevent overdraw.  
+✅ Account balance displayed prominently for quick reference.  
+
+### 🔹 **Enhanced Profile Page**  
+✅ Sleek, modern UI with smooth animations and transitions.  
+✅ Engaging and interactive elements for a seamless experience.  
+✅ Eye-catching "Add Money" button for effortless transactions.  
+
+---
+
+## **Screenshots**  
+
+### **🏠 Home Page**  
+![Home Page](https://github.com/user-attachments/assets/118038a0-55f9-40a8-9104-c9b06670a383)  
+
+### **📈 Investment Page**  
+![Investment Page](https://github.com/user-attachments/assets/40713171-c17a-47cd-848a-fe0055867ac9)  
+
+### **🔍 Suggestions Page**  
+![Suggestions Page](https://github.com/user-attachments/assets/78bd62fe-b802-479f-a0ea-da3eb40eaee1)  
+
+---
+
+## **Tech Stack**  
+🖥️ **Frontend:** React.js, Tailwind CSS  
+🛠 **Backend:** Node.js, Express.js  
+📊 **Database:** MongoDB  
+
+---
+
+## **Installation**  
+Follow these steps to set up the project locally:  
+
+1️⃣ **Clone the Repository**  
+```sh
+git clone https://github.com/your-repo-name.git
+cd your-repo-name
+```  
+2️⃣ **Install Dependencies**  
+```sh
+npm install
+```  
+3️⃣ **Start the Backend Server**  
+```sh
+node server.js
+```  
+4️⃣ **Run the Frontend**  
+```sh
+npm start
+```  
+
+---
+
+## **Usage Guide**  
+🔹 **Analyze Investments**: Use the calculator to predict potential returns.  
+🔹 **Manage Funds**: Add money to your account before purchasing stocks.  
+🔹 **Buy Stocks**: Invest based on your available balance, with instant validation.  
+🔹 **Explore the Profile Page**: Enjoy an enhanced UI with smooth interactions.  
+
+---
