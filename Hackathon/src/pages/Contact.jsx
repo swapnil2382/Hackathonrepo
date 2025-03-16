@@ -24,10 +24,14 @@ const Contact = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 style={{ fontSize: "45px" }} className="ms-160">
-          Contact Us
-        </h2>
-        <p className="ms-170">How can I help you</p>
+        <motion.div id="contact" className="contact w-100 px-5 mb-5 ">
+          <div>
+            <h2 style={{ fontSize: "45px" }} className="ms-160">
+              Contact Us
+            </h2>
+            <p className="ms-170">How can I help you</p>
+          </div>
+        </motion.div>
       </motion.div>
 
       <div className="main flex">

@@ -37,7 +37,6 @@ const Profile = ({ token: propToken }) => {
           const response = await axios.get(
             "http://localhost:5000/api/auth/user",
             {
-              // ✅ Correct endpoint
               headers: { Authorization: `Bearer ${token}` },
             }
           );
@@ -143,7 +142,7 @@ const Profile = ({ token: propToken }) => {
           </p>
         </div>
 
-        {/* Overall Investment Line Chart */}
+        {/* Investment Trend Chart */}
         <div className="h-52 mb-8 bg-white border rounded-lg shadow-md p-4">
           <h3 className="text-xl font-semibold text-gray-700 mb-4">
             Investment Trend
@@ -151,7 +150,7 @@ const Profile = ({ token: propToken }) => {
           <Line data={lineChartData} options={lineChartOptions} />
         </div>
 
-        {/* Recent Activity Timeline */}
+        {/* Recent Activities */}
         <div className="mb-8">
           <h3 className="text-xl font-semibold text-gray-700 mb-4">
             Recent Activities
@@ -180,6 +179,7 @@ const Profile = ({ token: propToken }) => {
                 (new Date() - new Date(investment.date)) / (1000 * 60 * 60 * 24)
               );
               const isGrowing = investment.amount >= 1000; // Example condition
+
               return (
                 <div
                   key={investment._id}

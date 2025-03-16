@@ -4,36 +4,84 @@ import moment from "moment";
 
 const Investments = ({ token }) => {
   const [investments, setInvestments] = useState([]);
+  const [balance, setBalance] = useState(0);
   const [newInvestment, setNewInvestment] = useState({ name: "", amount: "" });
 
+  // Fetch investments & balance on component mount
   useEffect(() => {
     if (token) {
-      axios
-        .get("http://localhost:5000/api/investments", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          setInvestments(response.data);
-        })
-        .catch((error) => console.error("Error fetching investments:", error));
+      fetchInvestments();
+      fetchBalance();
     }
   }, [token]);
 
+  // Fetch investments from backend
+  const fetchInvestments = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/investments",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setInvestments(response.data);
+    } catch (error) {
+      console.error("Error fetching investments:", error);
+    }
+  };
+
+  // Fetch account balance
+  const fetchBalance = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/account/balance",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setBalance(response.data.balance);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+    }
+  };
+
+  // Add a new investment
   const handleAddInvestment = async () => {
     if (newInvestment.name && newInvestment.amount) {
       try {
-        await axios.post("http://localhost:5000/api/investments", newInvestment, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.post(
+          "http://localhost:5000/api/investments",
+          { ...newInvestment, amount: Number(newInvestment.amount) }, // Ensure amount is a number
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-        const response = await axios.get("http://localhost:5000/api/investments", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setInvestments(response.data);
         setNewInvestment({ name: "", amount: "" });
+        fetchInvestments(); // Refresh investments
+        fetchBalance(); // Refresh balance
       } catch (error) {
         console.error("Error adding investment:", error);
       }
+    }
+  };
+
+  // Sell an investment
+  const handleSellInvestment = async (investmentId) => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/account/sell",
+        { investmentId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Remove sold investment from UI
+      setInvestments((prev) =>
+        prev.filter((investment) => investment._id !== investmentId)
+      );
+
+      // Refresh balance
+      fetchBalance();
+    } catch (error) {
+      console.error("Error selling investment:", error);
     }
   };
 
@@ -43,6 +91,12 @@ const Investments = ({ token }) => {
         <h2 className="text-3xl font-bold text-center text-indigo-700">
           Your <span className="text-gray-800">Investments</span>
         </h2>
+
+        {/* Display Balance */}
+        <div className="text-center text-lg font-medium text-gray-700">
+          Account Balance:{" "}
+          <span className="text-indigo-700 font-bold">${balance}</span>
+        </div>
 
         {/* Add Investment Section */}
         <div>
@@ -54,14 +108,18 @@ const Investments = ({ token }) => {
               type="text"
               placeholder="Investment Name"
               value={newInvestment.name}
-              onChange={(e) => setNewInvestment({ ...newInvestment, name: e.target.value })}
+              onChange={(e) =>
+                setNewInvestment({ ...newInvestment, name: e.target.value })
+              }
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition hover:border-indigo-400"
             />
             <input
               type="number"
               placeholder="Amount"
               value={newInvestment.amount}
-              onChange={(e) => setNewInvestment({ ...newInvestment, amount: e.target.value })}
+              onChange={(e) =>
+                setNewInvestment({ ...newInvestment, amount: e.target.value })
+              }
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition hover:border-indigo-400"
             />
             <button
@@ -86,14 +144,16 @@ const Investments = ({ token }) => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {investments.map((investment) => {
-                const investmentDate = moment(investment.date).format("MMM DD, YYYY");
-                const duration = moment().diff(moment(investment.date), 'days');
+                const investmentDate = moment(investment.date).format(
+                  "MMM DD, YYYY"
+                );
+                const duration = moment().diff(moment(investment.date), "days");
                 const status = investment.amount > 1000 ? "Growing" : "Stable";
 
                 return (
                   <div
                     key={investment._id}
-                    className="p-4 bg-gradient-to-tr from-white to-gray-100 border border-gray-300 rounded-md shadow-sm hover:shadow-lg transition hover:border-indigo-500 hover:bg-white cursor-pointer"
+                    className="relative p-4 bg-gradient-to-tr from-white to-gray-100 border border-gray-300 rounded-md shadow-sm hover:shadow-lg transition hover:border-indigo-500 hover:bg-white cursor-pointer"
                   >
                     <h4 className="text-md font-semibold text-indigo-700 mb-1 truncate">
                       {investment.name}
@@ -108,7 +168,8 @@ const Investments = ({ token }) => {
                     <hr className="my-2 border-gray-300" />
 
                     <p className="text-xs text-gray-500">
-                      Date: <span className="text-gray-800">{investmentDate}</span>
+                      Date:{" "}
+                      <span className="text-gray-800">{investmentDate}</span>
                     </p>
                     <p className="text-xs text-gray-500">
                       Duration:{" "}
@@ -118,12 +179,22 @@ const Investments = ({ token }) => {
                       Status:{" "}
                       <span
                         className={`font-medium ${
-                          status === "Growing" ? "text-green-500" : "text-blue-500"
+                          status === "Growing"
+                            ? "text-green-500"
+                            : "text-blue-500"
                         }`}
                       >
                         {status}
                       </span>
                     </p>
+
+                    {/* Sell Button */}
+                    <button
+                      onClick={() => handleSellInvestment(investment._id)}
+                      className="absolute bottom-3 right-3 px-3 py-1 text-xs bg-red-600 text-white rounded-md hover:bg-red-700 transition shadow-sm"
+                    >
+                      Sell
+                    </button>
                   </div>
                 );
               })}

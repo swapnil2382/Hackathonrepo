@@ -21,8 +21,6 @@ export default function Home() {
                 "url(https://media.istockphoto.com/id/1470066185/photo/mutual-fund-or-systematic-investment-plan-concept-putting-coin-on-coin-stack.jpg?s=612x612&w=0&k=20&c=pyc0fmFNupQ_OKpjNj8qSVpRhRa0ir9lqmB5TpA25gc=)",
             }}
           />
-
-          {/* Animated Content */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -31,53 +29,26 @@ export default function Home() {
             className="relative z-20 container mx-auto px-4 py-32 md:py-48"
           >
             <div className="max-w-3xl">
-              <motion.h1
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: false }}
-                className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight"
-              >
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 Transform Your Digital Financial Presence
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: false }}
-                className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl"
-              >
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
                 We create innovative investment solutions that help businesses
                 grow, engage customers, and achieve their financial goals.
-              </motion.p>
+              </p>
               <div className="flex flex-wrap gap-4">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: false }}
+                <Link
+                  to="/sugges"
+                  className="inline-flex items-center px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-lg font-medium transition !no-underline"
                 >
-                  <Link
-                    to="/sugges"
-                    className="inline-flex items-center px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-lg font-medium transition !no-underline"
-                  >
-                    Investment Solutions <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  viewport={{ once: false }}
+                  Investment Solutions <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+                <Link
+                  to="/calculator"
+                  className="inline-flex items-center px-8 py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border border-white/30 rounded-full text-lg font-medium transition !no-underline"
                 >
-                  <Link
-                    to="/calculator"
-                    className="inline-flex items-center px-8 py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border border-white/30 rounded-full text-lg font-medium transition !no-underline"
-                  >
-                    Investment Calculator
-                  </Link>
-                </motion.div>
+                  Investment Calculator
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -173,7 +144,8 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-      <Services />
+
+      {/* Additional Sections */}
       <About />
       <Contact />
     </>

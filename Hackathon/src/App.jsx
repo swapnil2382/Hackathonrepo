@@ -46,7 +46,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/investments" element={<Investments token={token} />} />
           <Route path="#contact" element={<Contact />} />
-          <Route path="#services" element={<Services />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/stocks" element={<StockData />} />
           <Route path="/sugges" element={<InvestmentSuggestions/>} />

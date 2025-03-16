@@ -1,6 +1,7 @@
 const express = require("express");
 const Account = require("../models/Account");
 const User = require("../models/userModel"); // Adjust the path if needed
+const Investment = require("../models/investmentModel"); 
 
 const authMiddleware = require("../middleware/authMiddleware");
 
@@ -87,5 +88,41 @@ router.post("/deduct-balance", authMiddleware, async (req, res) => {  // ✅ Add
     }
   });
   
+  router.post("/sell", authMiddleware, async (req, res) => {
+    try {
+      const { investmentId } = req.body;
+      const userEmail = req.user.email;
   
+      if (!userEmail) {
+        return res.status(403).json({ message: "Unauthorized. Email is missing." });
+      }
+  
+      // ✅ Find the investment
+      const investment = await Investment.findOne({ _id: investmentId });
+  
+      if (!investment) {
+        return res.status(404).json({ message: "Investment not found" });
+      }
+  
+      // ✅ Fetch or create user's account
+      let account = await Account.findOne({ email: userEmail });
+      if (!account) {
+        account = new Account({ email: userEmail, balance: 0 });
+      }
+  
+      // ✅ Add investment amount back to the account balance
+      account.balance += investment.amount;
+      await account.save();
+  
+      // ✅ Delete the investment
+      await Investment.deleteOne({ _id: investmentId });
+  
+      res.json({ message: "Investment sold successfully", balance: account.balance });
+    } catch (error) {
+      console.error("Error selling investment:", error);
+      res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+  });
+  
+
   module.exports = router;

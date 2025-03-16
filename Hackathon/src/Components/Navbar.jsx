@@ -27,12 +27,12 @@ export default function Navbar({ user, setUser }) {
   };
 
   const menuLinks = [
-    { label: "Home", href: "/" },
-    { label: "Services", href: "#services" },
-    { label: "Contact", href: "#contact" },
-    { label: "About", href: "#about" },
-    { label: "Investments", href: "/investments" },
-    { label: "Stocks", href: "/stocks" },
+    { label: "Home", path: "/" },
+    { label: "Services", path: "/#services" },
+    { label: "Contact", path: "/#contact" },
+    { label: "About", path: "/#about" },
+    { label: "Investments", path: "/investments" },
+    { label: "Stocks", path: "/stocks" },
   ];
 
   return (
@@ -53,15 +53,16 @@ export default function Navbar({ user, setUser }) {
             Investment<span className="text-black">Portal</span>
           </div>
 
+          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 items-center">
             {menuLinks.map((link) => (
-              <a
+              <span
                 key={link.label}
-                href={link.href}
-                className="text-black font-semibold !no-underline hover:text-gray-800 transition"
+                onClick={() => navigate(link.path)}
+                className="text-black font-semibold cursor-pointer hover:text-gray-800 transition"
               >
                 {link.label}
-              </a>
+              </span>
             ))}
 
             {user ? (
@@ -81,12 +82,12 @@ export default function Navbar({ user, setUser }) {
                 </button>
               </div>
             ) : (
-              <a
-                href="/login"
+              <button
+                onClick={() => navigate("/login")}
                 className="border border-black px-4 py-1.5 rounded hover:bg-gray-300 transition duration-200 text-black"
               >
                 Login
-              </a>
+              </button>
             )}
           </div>
 
@@ -110,20 +111,26 @@ export default function Navbar({ user, setUser }) {
             className="md:hidden bg-gray-100/80 backdrop-blur-lg shadow-inner px-6 pt-4 pb-6 space-y-4"
           >
             {menuLinks.map((link) => (
-              <a
+              <span
                 key={link.label}
-                href={link.href}
-                className="block text-black font-medium hover:text-gray-800 transition duration-200"
+                onClick={() => {
+                  navigate(link.path);
+                  setIsOpen(false);
+                }}
+                className="block text-black font-medium cursor-pointer hover:text-gray-800 transition duration-200"
               >
                 {link.label}
-              </a>
+              </span>
             ))}
 
             {user ? (
               <>
                 <span
-                  onClick={() => navigate("/profile")}
-                  className="block text-black font-medium cursor-pointer hover:text-indigo-600 transition duration-200 flex items-center gap-1"
+                  onClick={() => {
+                    navigate("/profile");
+                    setIsOpen(false);
+                  }}
+                  className="block text-gray-800 font-medium cursor-pointer hover:text-indigo-600 transition duration-200 flex items-center gap-1"
                 >
                   <User size={18} className="text-indigo-600" />
                   {user.name}
@@ -136,12 +143,15 @@ export default function Navbar({ user, setUser }) {
                 </button>
               </>
             ) : (
-              <a
-                href="/login"
+              <button
+                onClick={() => {
+                  navigate("/login");
+                  setIsOpen(false);
+                }}
                 className="block text-black font-medium hover:text-gray-800 transition duration-200"
               >
                 Login
-              </a>
+              </button>
             )}
           </motion.div>
         )}
