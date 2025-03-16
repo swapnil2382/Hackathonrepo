@@ -1,5 +1,5 @@
+import { User, Menu, X } from "lucide-react"; // Importing the User icon
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -18,10 +18,10 @@ export default function Navbar({ user, setUser }) {
 
   const menuLinks = [
     { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Contact", href: "/contact" },
-    { label: "Suggestion", href: "/sugges" },
+    { label: "Services", href: "#services" },
+    { label: "Contact", href: "#contact" },
+    { label: "About", href: "#about" },
+    { label: "Investments", href: "/investments" },
     { label: "Stocks", href: "/stocks" },
   ];
 
@@ -51,8 +51,12 @@ export default function Navbar({ user, setUser }) {
 
             {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-gray-800 font-semibold flex items-center gap-1">
-                  👤 {user.name}
+                <span
+                  onClick={() => navigate("/profile")}
+                  className="text-gray-800 font-semibold cursor-pointer hover:text-indigo-600 transition flex items-center gap-1"
+                >
+                  <User size={18} className="text-indigo-600" /> {/* Icon added here */}
+                  {user.name}
                 </span>
                 <button
                   onClick={handleLogout}
@@ -101,12 +105,21 @@ export default function Navbar({ user, setUser }) {
             ))}
 
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="block text-left w-full text-red-500 hover:text-red-600 font-medium"
-              >
-                Logout
-              </button>
+              <>
+                <span
+                  onClick={() => navigate("/profile")}
+                  className="block text-gray-800 font-medium cursor-pointer hover:text-indigo-600 transition duration-200 flex items-center gap-1"
+                >
+                  <User size={18} className="text-indigo-600" />
+                  {user.name}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="block text-left w-full text-red-500 hover:text-red-600 font-medium"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <a
                 href="/login"

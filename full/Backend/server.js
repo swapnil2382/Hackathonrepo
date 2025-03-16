@@ -9,7 +9,8 @@ const stockRoutes = require("./routes/stockRoutes");  // Import investments rout
 const marketRoutes = require("./routes/marketRoutes");
 const suggestionsRoute = require("./routes/suggestions");
 const recommendationRoute = require("./routes/recommendation"); // Import investments route
-
+const userRoutes = require('./routes/userRoutes');
+const accountRoutes = require("./routes/accountRoutes");
 const app = express();
 const port = 5000;
 
@@ -23,7 +24,9 @@ app.use('/api/investments', investmentRoutes);
 app.use("/api/stocks", stockRoutes);
 app.use("/api", marketRoutes);  // 👈 Now investments route is accessible
 app.use("/api/suggestions", suggestionsRoute);
-app.use("/api/recommendation", recommendationRoute); // 👈 Now investments route is accessible
+app.use("/api/recommendation", recommendationRoute);
+app.use('/api', userRoutes);
+app.use("/api/account", accountRoutes);// 👈 Now investments route is accessible
 
 mongoose
   .connect(process.env.MONGO_URI, {

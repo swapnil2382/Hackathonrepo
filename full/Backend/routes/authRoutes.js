@@ -33,15 +33,17 @@ router.post('/login', async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });  // ✅ Store email in token
+
   res.json({ token });
 });
 
 router.get('/user', require('../middleware/authMiddleware'), async (req, res) => {
-  const user = await User.findById(req.userId).select('-password');
+  const user = await User.findOne({ email: req.user.email }).select('-password'); // ✅ Use email
   if (!user) return res.status(404).json({ message: 'User not found' });
 
   res.json(user);
 });
+
 
 module.exports = router;

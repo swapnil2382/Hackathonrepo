@@ -12,8 +12,10 @@ import Contact from './pages/Contact'
 import Services from './pages/Services'
 import Calculator from './pages/Calculator';
 import StockData from './pages/Stockdata';
-
+import Profile from './pages/Profile';
 import InvestmentSuggestions from './pages/InvestmentSuggestions';
+import AddMoney from './pages/AddMoney';
+
 
 
 
@@ -22,12 +24,15 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/auth/user", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then(response => setUser(response.data))
-    .catch(error => console.error("Error fetching user:", error));
+    if (token) {  // ✅ Ensure token exists
+      axios.get("http://localhost:5000/api/auth/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(response => setUser(response.data))
+      .catch(error => console.error("Error fetching user:", error));
+    }
   }, [token]);
+  
   
 
   return (
@@ -40,12 +45,14 @@ function App() {
           <Route path="/login" element={<Login setToken={setToken} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/investments" element={<Investments token={token} />} />
-          <Route path="/Contact" element={<Contact />} />
-          <Route path="/Services" element={<Services />} />
+          <Route path="#contact" element={<Contact />} />
+          <Route path="#services" element={<Services />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/stocks" element={<StockData />} />
           <Route path="/sugges" element={<InvestmentSuggestions/>} />
-         
+          <Route path="/profile" element={<Profile/>} />
+          <Route path="/add-money" element={<AddMoney/>} />
+          
         </Routes>
       </div>
       <Footer/>

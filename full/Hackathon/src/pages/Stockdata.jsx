@@ -18,10 +18,25 @@ const StockData = ({ token }) => {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("AAPL");
   const [investments, setInvestments] = useState([]);
+  const [balance, setBalance] = useState(0); // ✅ Balance state
 
   const storedToken = localStorage.getItem("token");
   const authToken = token || storedToken;
 
+  // ✅ Fetch Balance
+  const fetchBalance = async () => {
+    if (!authToken) return;
+    try {
+      const response = await axios.get("http://localhost:5000/api/account/balance", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      setBalance(response.data.balance);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+    }
+  };
+
+  // ✅ Fetch Stock Data
   const fetchStockData = async (symbol, assetType = "stocks") => {
     if (!authToken) return;
 
@@ -33,7 +48,6 @@ const StockData = ({ token }) => {
         { headers: { Authorization: `Bearer ${authToken}` } }
       );
 
-      console.log("API Response:", response.data);
       if (response.data.values) {
         setData(response.data.values.slice(0, 15)); // Fetch exactly 15 data points
       } else {
@@ -48,6 +62,7 @@ const StockData = ({ token }) => {
     }
   };
 
+  // ✅ Fetch User Investments
   const fetchInvestments = async () => {
     if (!authToken) return;
     try {
@@ -65,8 +80,24 @@ const StockData = ({ token }) => {
       alert("Please log in to buy stocks.");
       return;
     }
-
+  
+    if (stock.close > balance) {
+      alert("Insufficient balance to purchase this stock.");
+      return;
+    }
+  
     try {
+      // ✅ Deduct balance in backend
+      const balanceResponse = await axios.post(
+        "http://localhost:5000/api/account/deduct-balance",
+        { amount: stock.close },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
+  
+      // ✅ Update local balance state
+      setBalance(balanceResponse.data.balance);
+  
+      // ✅ Store the purchased stock in investments
       await axios.post(
         "http://localhost:5000/api/investments",
         {
@@ -77,17 +108,20 @@ const StockData = ({ token }) => {
           headers: { Authorization: `Bearer ${authToken}` },
         }
       );
-
+  
       alert(`Successfully purchased ${symbol} at $${stock.close}`);
       fetchInvestments(); // Refresh investments
+  
     } catch (error) {
       console.error("Error buying stock:", error);
-      alert("Failed to complete purchase. Make sure you're logged in.");
+      alert("Failed to complete purchase.");
     }
   };
+  
 
   useEffect(() => {
     if (authToken) {
+      fetchBalance(); // ✅ Fetch balance
       fetchStockData(symbol, assetType);
       fetchInvestments();
     }
@@ -96,6 +130,11 @@ const StockData = ({ token }) => {
   return (
     <div className="w-full min-h-screen bg-gray-100 p-4">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-xl border border-gray-200 p-5">
+        {/* ✅ Balance Display */}
+        <div className="text-right mb-4 text-lg font-semibold text-gray-800">
+          Balance: <span className="text-green-600">${balance.toFixed(2)}</span>
+        </div>
+
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-5">
           {authToken ? `${assetType.toUpperCase()} Data for ${symbol}` : "Please Log In to View Stock Data"}
         </h2>
@@ -162,9 +201,6 @@ const StockData = ({ token }) => {
                       <thead>
                         <tr className="bg-gray-100">
                           <th className="p-2 border">Date</th>
-                          <th className="p-2 border">Open</th>
-                          <th className="p-2 border">High</th>
-                          <th className="p-2 border">Low</th>
                           <th className="p-2 border">Close</th>
                           <th className="p-2 border">Action</th>
                         </tr>
@@ -173,10 +209,7 @@ const StockData = ({ token }) => {
                         {data.map((item) => (
                           <tr key={item.datetime} className="text-center border-t">
                             <td className="p-2 border">{new Date(item.datetime).toLocaleString()}</td>
-                            <td className="p-2 border">{item.open}</td>
-                            <td className="p-2 border text-green-600">{item.high}</td>
-                            <td className="p-2 border text-red-600">{item.low}</td>
-                            <td className="p-2 border">{item.close}</td>
+                            <td className="p-2 border">${item.close}</td>
                             <td className="p-2 border">
                               <button
                                 onClick={() => handleBuyStock(item)}

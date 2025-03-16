@@ -9,7 +9,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact w-100 px-5 mb-5 ">
+    <div id="contact" className="contact w-100 px-5 mb-5 ">
       <div>
         <h2 style={{ fontSize: "45px" }} className="ms-160">
           Contact Us
