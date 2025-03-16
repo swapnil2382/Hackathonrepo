@@ -1,26 +1,44 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 const Contact = () => {
   const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // prevent page reload
-    alert("Your form is submit successfully " + name + "!");
+    e.preventDefault();
+    alert("Your form is submitted successfully, " + name + "!");
   };
 
   return (
-    <div id="contact" className="contact w-100 px-5 mb-5 ">
-      <div>
+    <motion.div
+      id="contact"
+      className="contact w-100 px-5 mb-5"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      viewport={{ once: false, amount: 0.2 }}
+    >
+      {/* Heading */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <h2 style={{ fontSize: "45px" }} className="ms-160">
           Contact Us
         </h2>
         <p className="ms-170">How can I help you</p>
-      </div>
+      </motion.div>
 
       <div className="main flex">
-        <div
+        {/* Contact Form */}
+        <motion.div
           style={{ width: "40%", border: "2px solid black" }}
           className="contact-form w-xl ms-48 me-20 p-10 rounded-3xl"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <div id="contact" className="section-padding">
             <div className="contact-form">
@@ -60,20 +78,41 @@ const Contact = () => {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <motion.button
+                  type="submit"
+                  className="btn btn-primary"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Submit
-                </button>
+                </motion.button>
               </form>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div style={{ border: "2px solid black" }} className="line"></div>
+        {/* Divider Line */}
+        <motion.div
+          style={{ border: "2px solid black" }}
+          className="line"
+          initial={{ opacity: 0, scaleY: 0 }}
+          whileInView={{ opacity: 1, scaleY: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: false }}
+        ></motion.div>
 
-        <div style={{ width: "80%" }} className="border3">
+        {/* Office Address */}
+        <motion.div
+          style={{ width: "80%" }}
+          className="border3"
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <h2 className="ms-20">Office Address</h2>
           <p className="ms-20">
-            Saraswati college of Engineering Kharghar
+            Saraswati College of Engineering, Kharghar
             <br />
             New Panvel
           </p>
@@ -87,9 +126,9 @@ const Contact = () => {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

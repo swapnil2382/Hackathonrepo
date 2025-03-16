@@ -1,5 +1,7 @@
 const express = require("express");
 const Account = require("../models/Account");
+const User = require("../models/userModel"); // Adjust the path if needed
+
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -56,25 +58,34 @@ router.post("/add", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/deduct-balance", async (req, res) => {
-    const { amount } = req.body;
+router.post("/deduct-balance", authMiddleware, async (req, res) => {  // ✅ Added authMiddleware
     try {
-      const user = await User.findById(req.user.id);
-      
-      if (!user) return res.status(404).json({ message: "User not found" });
+      const { amount } = req.body;
+      const userEmail = req.user.email; // ✅ Extract email from authMiddleware
   
-      if (user.balance < amount) {
+      if (!userEmail) {
+        return res.status(403).json({ message: "Unauthorized. Email is missing." });
+      }
+  
+      let account = await Account.findOne({ email: userEmail });
+  
+      if (!account) {
+        return res.status(404).json({ message: "Account not found" });
+      }
+  
+      if (account.balance < amount) {
         return res.status(400).json({ message: "Insufficient balance" });
       }
   
-      user.balance -= amount;
-      await user.save();
+      account.balance -= amount;
+      await account.save();
   
-      res.json({ balance: user.balance, message: "Balance updated successfully" });
+      res.json({ balance: account.balance, message: "Balance updated successfully" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error updating balance" });
+      console.error("Error updating balance:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
     }
   });
+  
   
   module.exports = router;

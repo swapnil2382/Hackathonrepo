@@ -1,11 +1,21 @@
-import { User, Menu, X } from "lucide-react"; // Importing the User icon
-import { useState } from "react";
+import { User, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ user, setUser }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50); // Change navbar when scrolled past 50px
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -26,7 +36,13 @@ export default function Navbar({ user, setUser }) {
   ];
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
+    <nav
+      className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-gray-200/70 backdrop-blur-lg shadow-md"
+          : "bg-gray-100/90 backdrop-blur-lg"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -34,16 +50,15 @@ export default function Navbar({ user, setUser }) {
             className="text-2xl font-extrabold text-indigo-600 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            Investment<span className="text-gray-800">Portal</span>
+            Investment<span className="text-black">Portal</span>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 items-center">
             {menuLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="text-black font-semibold !no-underline hover:text-indigo-600 transition"
+                className="text-black font-semibold !no-underline hover:text-gray-800 transition"
               >
                 {link.label}
               </a>
@@ -53,9 +68,9 @@ export default function Navbar({ user, setUser }) {
               <div className="flex items-center space-x-3">
                 <span
                   onClick={() => navigate("/profile")}
-                  className="text-gray-800 font-semibold cursor-pointer hover:text-indigo-600 transition flex items-center gap-1"
+                  className="text-black font-semibold cursor-pointer hover:text-indigo-600 transition flex items-center gap-1"
                 >
-                  <User size={18} className="text-indigo-600" /> {/* Icon added here */}
+                  <User size={18} className="text-indigo-600" />
                   {user.name}
                 </span>
                 <button
@@ -68,7 +83,7 @@ export default function Navbar({ user, setUser }) {
             ) : (
               <a
                 href="/login"
-                className="text-blue font-semibold !no-underline border border-red px-4 py-1.5 rounded hover:bg-gray-200 hover:text-white transition duration-200"
+                className="border border-black px-4 py-1.5 rounded hover:bg-gray-300 transition duration-200 text-black"
               >
                 Login
               </a>
@@ -92,13 +107,13 @@ export default function Navbar({ user, setUser }) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white shadow-inner px-6 pt-4 pb-6 space-y-4"
+            className="md:hidden bg-gray-100/80 backdrop-blur-lg shadow-inner px-6 pt-4 pb-6 space-y-4"
           >
             {menuLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="block text-gray-700 font-medium hover:text-indigo-600 transition duration-200"
+                className="block text-black font-medium hover:text-gray-800 transition duration-200"
               >
                 {link.label}
               </a>
@@ -108,7 +123,7 @@ export default function Navbar({ user, setUser }) {
               <>
                 <span
                   onClick={() => navigate("/profile")}
-                  className="block text-gray-800 font-medium cursor-pointer hover:text-indigo-600 transition duration-200 flex items-center gap-1"
+                  className="block text-black font-medium cursor-pointer hover:text-indigo-600 transition duration-200 flex items-center gap-1"
                 >
                   <User size={18} className="text-indigo-600" />
                   {user.name}
@@ -123,7 +138,7 @@ export default function Navbar({ user, setUser }) {
             ) : (
               <a
                 href="/login"
-                className="block text-indigo-600 font-medium hover:underline"
+                className="block text-black font-medium hover:text-gray-800 transition duration-200"
               >
                 Login
               </a>
