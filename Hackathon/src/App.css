@@ -1,0 +1,19 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  height: 100%; /* Ensures full height coverage */
+}
+
+[data-scroll-container] {
+  position: relative;
+  min-height: 100vh; /* Ensures scroll container fills screen */
+}
+
+footer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  z-index: 100;
+}

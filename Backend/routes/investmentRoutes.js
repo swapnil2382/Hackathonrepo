@@ -16,4 +16,14 @@ router.get('/', authMiddleware, async (req, res) => {
   res.json(investments);
 });
 
+router.get("/:userId", authMiddleware, async (req, res) => {
+  try {
+    const investments = await Investment.find({ userId: req.params.userId });
+    res.json(investments);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching investments", error });
+  }
+});
+
+
 module.exports = router;

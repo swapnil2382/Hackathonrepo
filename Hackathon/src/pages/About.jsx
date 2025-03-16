@@ -1,5 +1,4 @@
 import React from "react";
-import "../css/About.css";
 import {
   FaChartLine,
   FaMoneyBillWave,
@@ -35,7 +34,7 @@ const About = () => {
   ];
 
   return (
-    <div className="bg-white text-black min-h-screen flex flex-col items-center justify-center px-6 py-10">
+    <div id="about" className="bg-white text-black min-h-screen flex flex-col items-center justify-center px-6 py-10">
       <h2 className="text-4xl font-bold mb-8 text-center">
         About Our Investment Portal
       </h2>

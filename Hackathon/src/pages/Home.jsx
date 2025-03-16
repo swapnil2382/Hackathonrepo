@@ -2,9 +2,13 @@ import React from "react"
 import { ArrowRight, BarChart3, PieChart, TrendingUp } from "lucide-react"
 import { Link } from "react-router-dom"
 import '../css/Home.css'
+import Contact from './Contact'
+import Services from './Services'
+import About from './About';
 
 export default function Home() {
   return (
+    <>
     <div className="min-h-screen">
       {/* Hero Section */}
       <div className="relative">
@@ -31,7 +35,7 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/investments"
+                to="/sugges"
                 className="inline-flex items-center px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-lg font-medium transition !no-underline"
               >
                 Investment Solutions <ArrowRight className="ml-2 h-5 w-5" />
@@ -111,5 +115,11 @@ export default function Home() {
         </div>
       </div>
     </div>
+    <Services/>
+      <About/>
+      
+      <Contact/>
+    </>
   )
+  
 }

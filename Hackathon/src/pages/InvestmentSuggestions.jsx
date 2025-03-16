@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 export default function InvestmentSuggestions() {
   const [symbol, setSymbol] = useState("");
@@ -15,6 +16,8 @@ export default function InvestmentSuggestions() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -50,60 +53,80 @@ export default function InvestmentSuggestions() {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h2 className="text-2xl font-bold text-blue-700">
-        Investment Suggestion
-      </h2>
-      <input
-        type="text"
-        value={symbol}
-        onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-        placeholder="Enter stock symbol (e.g., IBM)"
-        className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        onClick={fetchData}
-        className="bg-blue-600 text-white mt-3  px-5 py-2 rounded-full hover:bg-blue-700 transition"
-      >
-        Get Suggestion
-      </button>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-      {recommendation && (
-        <div className="p-4 bg-blue-50 rounded-lg shadow">
-          <h3 className="text-lg font-semibold">
-            {recommendation.companyName}
-          </h3>
-          <p>{getRecommendationReason()}</p>
+    <div className="min-h-screen bg-gray-100 flex justify-center py-8 px-2 mt-16">
+      <div className="w-full max-w-7xl bg-white rounded-lg shadow-md p-5 space-y-4 border border-gray-200">
+        <h2 className="text-xl font-bold text-indigo-700 text-center">
+          Investment Suggestions
+        </h2>
+
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            type="text"
+            value={symbol}
+            onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+            placeholder="Stock symbol (e.g., IBM)"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-sm"
+          />
+          <button
+            onClick={fetchData}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition text-sm"
+          >
+            Get Suggestion
+          </button>
         </div>
-      )}
-      <div className="h-64">
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-gray-500">Graph is loading...</p>
-          </div>
-        ) : data.length > 0 ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+
+        {error && <p className="text-red-500 text-xs">{error}</p>}
+
+        {recommendation && (
+          <div className="p-3 bg-indigo-50 border border-indigo-200 rounded-lg shadow-sm">
+            <h3 className="text-sm font-semibold text-indigo-700">
+              {recommendation.companyName}
+            </h3>
+            <p className="text-gray-600 text-xs mt-1">
+              {getRecommendationReason()}
+            </p>
+            <button
+              onClick={() => navigate("/investments")}
+              className="mt-3 px-4 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition text-xs"
             >
-              <XAxis dataKey="date" hide={false} tick={{ fontSize: 12 }} />
-              <YAxis />
-              <Tooltip
-                contentStyle={{ backgroundColor: "#fff", borderColor: "#ccc" }}
-              />
-              <Line
-                type="monotone"
-                dataKey="close"
-                stroke="#4F46E5"
-                strokeWidth={3}
-                dot={{ fill: "#4F46E5" }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        ) : (
-          <p className="text-gray-500">No graph data available.</p>
+              Buy Share
+            </button>
+          </div>
         )}
+
+        <div className="h-52">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-500 text-xs">Graph is loading...</p>
+            </div>
+          ) : data.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={data}
+                margin={{ top: 5, right: 20, left: 0, bottom: 0 }}
+              >
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#fff",
+                    borderColor: "#ccc",
+                    fontSize: "12px",
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="close"
+                  stroke="#4F46E5"
+                  strokeWidth={2}
+                  dot={{ r: 2 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <p className="text-gray-500 text-xs">No graph data available.</p>
+          )}
+        </div>
       </div>
     </div>
   );
